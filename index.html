@@ -817,6 +817,17 @@
     margin-top:10px;
     opacity:.75;
   }
+  footer .footer-logo{
+    display:block;
+    margin:0 auto 18px;
+    max-width:min(260px, 80vw);
+  }
+  footer .footer-logo img{
+    display:block;
+    width:100%;
+    height:auto;
+    image-rendering:auto;
+  }
 
   @media (max-width:680px){
     #hero-card{ display:none; }
@@ -923,7 +934,7 @@
   <div class="app-picker-screen" role="dialog" aria-modal="true" aria-labelledby="appPickerTitle">
     <button type="button" class="app-picker-close" id="appPickerClose">X</button>
     <div class="app-picker-hud">
-      <div class="hud-group">MARIO<br>000000</div>
+      <div class="hud-group">Hale Apps LLC<br>9000</div>
       <div class="hud-group hud-coins">x03</div>
       <div class="hud-group">WORLD 1-1<br><span style="opacity:.7;">TIME</span></div>
     </div>
@@ -951,7 +962,9 @@
 </div>
 
 <footer>
-  HALE APPS LLC
+  <div class="footer-logo">
+    <img src="hale-apps-logo-primary.png" alt="Hale Apps LLC" width="520" height="120">
+  </div>
   <div class="small">&copy; <span id="year"></span> Hale Apps LLC &mdash; Course Clear!<br>Version 1.0.0.7</div>
 </footer>
 
