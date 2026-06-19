@@ -575,83 +575,186 @@
   .coin-divider span:nth-child(3){animation-delay:.3s;}
   @keyframes coinbounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
 
-  /* ============ WORLD MAP / LEVEL SELECT (apps) ============ */
+  /* ============ APPS LIST + APP PICKER MODAL ============ */
   .world-map-bg{
     background:linear-gradient(to bottom, #2a6e2a, #173f1a);
   }
-  .map-path{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    gap:46px;
-    padding:20px 0 10px;
+  .apps-line{
+    text-align:center;
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(10px, 2.2vw, 14px);
+    line-height:2;
+    margin:0;
+    color:#eaffea;
   }
-  .level-node{
-    display:flex;
-    align-items:center;
-    gap:26px;
-    width:100%;
+  .apps-line a{
+    color:#fff;
+    text-decoration:underline;
+    text-underline-offset:4px;
+    text-shadow:2px 2px 0 var(--ink);
   }
-  .map-path .level-node:nth-child(2){ justify-content:flex-end; }
-  .map-path .level-node:nth-child(2) .level-card{ order:-1; text-align:right; }
-  .node-block{
-    flex:0 0 auto;
-    width:84px;height:84px;
-    background:var(--h-block);
-    border:5px solid var(--ink);
-    box-shadow: inset -6px -6px 0 #A3271C;
+  .apps-line a:hover{ color:var(--coin); }
+  .apps-line span{ opacity:.65; margin:0 6px; }
+
+  .app-picker{
+    position:fixed;
+    inset:0;
+    z-index:200;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-family:'Press Start 2P';
-    font-size:34px;
-    color:var(--cream);
-    transition:transform .12s ease;
+    padding:20px;
+    background:rgba(0,0,0,.55);
+  }
+  .app-picker[hidden]{ display:none; }
+  .app-picker-screen{
     position:relative;
-    cursor:pointer;
-  }
-  .level-card{
-    background:var(--cream);
+    width:min(720px, 100%);
+    background:#5c94fc;
     border:4px solid var(--ink);
-    box-shadow:6px 6px 0 rgba(0,0,0,.3);
-    padding:18px 22px;
-    max-width:420px;
+    box-shadow:8px 8px 0 rgba(0,0,0,.45);
+    padding:18px 16px 22px;
   }
-  .level-card h3{
-    font-size:15px;
-    margin:0 0 8px;
+  .app-picker-hud{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    font-family:'Press Start 2P', monospace;
+    font-size:10px;
+    color:#fff;
+    text-shadow:2px 2px 0 var(--ink);
+    margin-bottom:14px;
+    flex-wrap:wrap;
   }
-  .level-card p{
-    margin:0 0 14px;
-    font-size:18px;
-    line-height:1.35;
+  .app-picker-hud .hud-group{ line-height:1.7; }
+  .app-picker-hud .hud-coins::before{
+    content:"";
+    display:inline-block;
+    width:12px; height:12px;
+    margin-right:4px;
+    vertical-align:middle;
+    background:var(--coin);
+    border:2px solid var(--ink);
+    border-radius:50%;
   }
-  .level-card a.btn{
-    display:inline-flex;
+  .app-picker-menu{
+    background:var(--ink);
+    border:4px solid #fff;
+    padding:18px 14px 16px;
+    text-align:center;
+  }
+  .app-picker-menu h2{
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(11px, 2.5vw, 16px);
+    color:#fff;
+    margin:0 0 6px;
+    text-decoration:underline;
+    text-underline-offset:6px;
+  }
+  .app-picker-sub{
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(8px, 1.8vw, 11px);
+    color:#ccc;
+    margin:0 0 18px;
+    letter-spacing:1px;
+  }
+  .app-picker-tiles{
+    display:flex;
+    justify-content:center;
+    gap:clamp(8px, 2vw, 18px);
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .app-tile{
+    display:flex;
+    flex-direction:column;
     align-items:center;
-    gap:8px;
-    font-family:'Press Start 2P';
+    justify-content:flex-end;
+    width:clamp(100px, 26vw, 148px);
+    height:clamp(110px, 28vw, 156px);
+    border:4px solid #888;
+    box-shadow:inset 0 0 0 2px var(--ink);
+    text-decoration:none;
+    color:#fff;
+    padding:8px 6px 10px;
+    transition:border-color .12s, transform .12s;
+  }
+  .app-tile:hover{
+    border-color:#fff;
+    transform:translateY(-3px);
+  }
+  .app-tile:focus-visible{
+    outline:3px solid var(--coin);
+    outline-offset:3px;
+  }
+  .app-tile .tile-label{
+    font-family:'Press Start 2P', monospace;
+    font-size:clamp(7px, 1.6vw, 9px);
+    line-height:1.5;
+    text-align:center;
+    text-shadow:2px 2px 0 var(--ink);
+  }
+  .app-tile .tile-world{
+    font-family:'VT323', monospace;
+    font-size:16px;
+    opacity:.9;
+    margin-top:4px;
+  }
+  .app-tile.tile-yd{
+    background:linear-gradient(180deg, #3a1a5c 0%, #6b2d8e 45%, #1a1028 100%);
+  }
+  .app-tile.tile-nd{
+    background:linear-gradient(180deg, #1a4a8a 0%, #3f86f5 50%, #0f2850 100%);
+  }
+  .app-tile.tile-mts{
+    background:linear-gradient(180deg, #8a5a1a 0%, #d4a040 45%, #4a3010 100%);
+  }
+  .app-picker-nav{
+    font-family:'Press Start 2P', monospace;
     font-size:11px;
-    background:var(--pipe-green);
+    color:#fff;
+    letter-spacing:2px;
+    opacity:.85;
+  }
+  .app-picker-close{
+    position:absolute;
+    top:8px; right:8px;
+    font-family:'Press Start 2P', monospace;
+    font-size:9px;
+    background:var(--h-block);
     color:#fff;
     border:3px solid var(--ink);
-    box-shadow: inset -4px -4px 0 var(--pipe-green-dark), 3px 3px 0 rgba(0,0,0,.35);
-    padding:10px 14px;
+    padding:8px 10px;
+    cursor:pointer;
+    box-shadow:3px 3px 0 rgba(0,0,0,.35);
+  }
+  .app-picker-close:hover{ filter:brightness(1.1); }
+  .app-picker-close:active{ transform:translate(2px,2px); box-shadow:none; }
+  .app-picker-floor{
+    margin-top:14px;
+    height:32px;
+    border:3px solid var(--ink);
+    background:
+      linear-gradient(var(--ink) 0 2px, transparent 2px) 0 0/100% 10px,
+      linear-gradient(90deg,var(--ink) 0 2px, transparent 2px) 0 0/15px 100%,
+      var(--brick);
+    box-shadow: inset -4px -4px 0 var(--brick-dark);
+  }
+
+  .contact-grid .btn{
+    font-family:'Press Start 2P';
+    font-size:11px;
+    background:var(--coin);
+    color:var(--ink);
+    border:3px solid var(--ink);
+    box-shadow: inset -4px -4px 0 var(--coin-dark), 3px 3px 0 rgba(0,0,0,.3);
+    padding:12px 16px;
+    display:inline-block;
     cursor:pointer;
   }
-  .level-card a.btn:hover{ filter:brightness(1.08); }
-  .level-card a.btn:active{ transform:translate(2px,2px); box-shadow:none; }
-
-  .dotted-link{
-    flex:1;
-    height:0;
-    border-top:4px dotted var(--cream);
-    opacity:.6;
-    min-width:30px;
-  }
-
-  .node-block.popped{ animation:popcoin .25s ease; }
-  @keyframes popcoin{ 0%{transform:translateY(0);} 40%{transform:translateY(-14px);} 100%{transform:translateY(0);} }
+  .contact-grid .btn:hover{ filter:brightness(1.05); }
+  .contact-grid .btn:active{ transform:translate(2px,2px); box-shadow:none; }
 
   /* ============ CONTACT SECTION ============ */
   .contact-section{
@@ -694,18 +797,6 @@
     gap:14px;
     justify-content:center;
   }
-  .contact-grid a.btn{
-    font-family:'Press Start 2P';
-    font-size:11px;
-    background:var(--coin);
-    color:var(--ink);
-    border:3px solid var(--ink);
-    box-shadow: inset -4px -4px 0 var(--coin-dark), 3px 3px 0 rgba(0,0,0,.3);
-    padding:12px 16px;
-    display:inline-block;
-  }
-  .contact-grid a.btn:hover{ filter:brightness(1.05); }
-  .contact-grid a.btn:active{ transform:translate(2px,2px); box-shadow:none; }
 
   /* ============ FOOTER ============ */
   footer{
@@ -727,13 +818,6 @@
   }
 
   @media (max-width:680px){
-    .map-path .level-node, .map-path .level-node:nth-child(2){
-      flex-direction:column;
-      justify-content:center;
-      text-align:center;
-    }
-    .map-path .level-node:nth-child(2) .level-card{ order:0; text-align:center; }
-    .dotted-link{ display:none; }
     #hero-card{ display:none; }
   }
 
@@ -808,46 +892,14 @@
   <div class="floor-strip"></div>
 </div>
 
-<!-- ===================== LEVEL SELECT / APPS ===================== -->
+<!-- ===================== APPS ===================== -->
 <section class="world-map-bg">
   <div class="section-inner">
     <div class="coin-divider"><span></span><span></span><span></span></div>
-    <h2 class="section-title" style="color:#fff;">SELECT YOUR LEVEL</h2>
-    <p class="section-sub" style="color:#cfe9cf;">Published apps from Hale Apps LLC &mdash; pick one to play.</p>
-
-    <div class="map-path">
-
-      <div class="level-node">
-        <div class="node-block" data-link="https://www.yourdagger.com">1</div>
-        <div class="dotted-link"></div>
-        <div class="level-card">
-          <h3>YOURDAGGER</h3>
-          <p>World 1-1 &mdash; yourdagger.com</p>
-          <a class="btn" href="https://www.yourdagger.com" target="_blank" rel="noopener">ENTER &#9658;</a>
-        </div>
-      </div>
-
-      <div class="level-node">
-        <div class="node-block" data-link="https://www.nashdial.com">2</div>
-        <div class="dotted-link"></div>
-        <div class="level-card">
-          <h3>NASHDIAL</h3>
-          <p>World 1-2 &mdash; nashdial.com</p>
-          <a class="btn" href="www.nashdial.com" target="_blank" rel="noopener">ENTER &#9658;</a>
-        </div>
-      </div>
-
-      <div class="level-node">
-        <div class="node-block" data-link="https://www.morethanasunday.com">3</div>
-        <div class="dotted-link"></div>
-        <div class="level-card">
-          <h3>MORE THAN A SUNDAY</h3>
-          <p>World 1-3 &mdash; morethanasunday.com</p>
-          <a class="btn" href="https://www.morethanasunday.com" target="_blank" rel="noopener">ENTER &#9658;</a>
-        </div>
-      </div>
-
-    </div>
+    <h2 class="section-title" style="color:#fff;">APPS I HAVE CREATED</h2>
+    <p class="apps-line">
+      <a href="https://www.yourdagger.com" target="_blank" rel="noopener">YourDagger</a><span>·</span><a href="https://www.nashdial.com" target="_blank" rel="noopener">NashDial</a><span>·</span><a href="https://www.morethanasunday.com" target="_blank" rel="noopener">More Than A Sunday</a>
+    </p>
   </div>
 </section>
 
@@ -859,12 +911,43 @@
       <h2>GET IN TOUCH</h2>
       <p>Got a question, a project, or just want to say hi?<br>Send a message and I'll warp back to you soon.</p>
       <div class="contact-grid">
-        <a class="btn" href="mailto:support@haleappsllc.com">&#9993; EMAIL SUPPORT</a>
-        <a class="btn" href="https://www.yourdagger.com" target="_blank" rel="noopener">&#9733; VIEW APPS</a>
+        <button type="button" class="btn" id="emailBtn">&#9993; EMAIL ME</button>
+        <button type="button" class="btn" id="viewAppsBtn">&#9733; VIEW APPS</button>
       </div>
     </div>
   </div>
 </section>
+
+<div class="app-picker" id="appPicker" hidden aria-hidden="true">
+  <div class="app-picker-screen" role="dialog" aria-modal="true" aria-labelledby="appPickerTitle">
+    <button type="button" class="app-picker-close" id="appPickerClose">X</button>
+    <div class="app-picker-hud">
+      <div class="hud-group">MARIO<br>000000</div>
+      <div class="hud-group hud-coins">x03</div>
+      <div class="hud-group">WORLD 1-1<br><span style="opacity:.7;">TIME</span></div>
+    </div>
+    <div class="app-picker-menu">
+      <h2 id="appPickerTitle">APPS I HAVE CREATED</h2>
+      <p class="app-picker-sub">PICK A SITE</p>
+      <div class="app-picker-tiles">
+        <a class="app-tile tile-yd" href="https://www.yourdagger.com" target="_blank" rel="noopener">
+          <span class="tile-label">YOUR<br>DAGGER</span>
+          <span class="tile-world">World 1-1</span>
+        </a>
+        <a class="app-tile tile-nd" href="https://www.nashdial.com" target="_blank" rel="noopener">
+          <span class="tile-label">NASH<br>DIAL</span>
+          <span class="tile-world">World 1-2</span>
+        </a>
+        <a class="app-tile tile-mts" href="https://www.morethanasunday.com" target="_blank" rel="noopener">
+          <span class="tile-label">MORE THAN<br>A SUNDAY</span>
+          <span class="tile-world">World 1-3</span>
+        </a>
+      </div>
+      <div class="app-picker-nav">&lt; ---- + &gt;</div>
+    </div>
+    <div class="app-picker-floor" aria-hidden="true"></div>
+  </div>
+</div>
 
 <footer>
   HALE APPS LLC
@@ -1066,6 +1149,9 @@
       if (e.clientY >= r.top && e.clientY <= r.bottom) e.preventDefault();
     });
     window.addEventListener('mousedown', (e)=>{
+      if (e.target.closest('a, button, input, textarea, select, .app-picker')) return;
+      const r = heroSky.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom) return;
       if (e.button === 2){
         isCrouching = true;
         return;
@@ -1220,15 +1306,38 @@
   const totalBlocks = reduceMotion ? 0 : 12;
   for (let i=0; i<totalBlocks; i++){ blocks.push(makeBlock(i)); }
 
-  /* ---------- clicking a level block pops a coin bounce ---------- */
-  document.querySelectorAll('.node-block').forEach(block=>{
-    block.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      block.classList.remove('popped');
-      requestAnimationFrame(()=> block.classList.add('popped'));
-      const link = block.getAttribute('data-link');
-      if (link) window.open(link, '_blank', 'noopener');
-    });
+  /* ---------- contact buttons + app picker modal ---------- */
+  const SUPPORT_EMAIL = 'support@haleappsllc.com';
+  const appPicker = document.getElementById('appPicker');
+  const viewAppsBtn = document.getElementById('viewAppsBtn');
+  const appPickerClose = document.getElementById('appPickerClose');
+  const emailBtn = document.getElementById('emailBtn');
+
+  function openAppPicker(){
+    appPicker.hidden = false;
+    appPicker.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    appPickerClose.focus();
+  }
+
+  function closeAppPicker(){
+    appPicker.hidden = true;
+    appPicker.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    viewAppsBtn.focus();
+  }
+
+  emailBtn.addEventListener('click', ()=>{
+    window.location.href = 'mailto:' + SUPPORT_EMAIL + '?subject=Hello%20Hale%20Apps%20LLC';
+  });
+
+  viewAppsBtn.addEventListener('click', openAppPicker);
+  appPickerClose.addEventListener('click', closeAppPicker);
+  appPicker.addEventListener('click', (e)=>{
+    if (e.target === appPicker) closeAppPicker();
+  });
+  window.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape' && !appPicker.hidden) closeAppPicker();
   });
 </script>
 
